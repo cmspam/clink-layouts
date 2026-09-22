@@ -3,8 +3,12 @@ name: Release layouts
 on:
   push:
     branches: [main]
-    paths: ["Layouts/**", ".github/workflows/release.yml"]
+    paths: ["Layouts/**", "tools/**", ".github/workflows/release.yml"]
   workflow_dispatch:
+
+concurrency:
+  group: layout-release
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -14,36 +18,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build release manifest
+      - run: python3 tools/build-manifest.py
+      - name: Publish a permanent layout release
+        env: { GH_TOKEN: "${{ github.token }}" }
+        shell: bash
         run: |
-          python3 - <<'PY'
-          import hashlib, json, os
-          layouts = []
-          for filename in sorted(os.listdir("Layouts")):
-              if not filename.endswith(".clinklayout"):
-                  continue
-              path = os.path.join("Layouts", filename)
-              with open(path, encoding="utf-8") as f:
-                  layout = json.load(f)
-              with open(path, "rb") as f:
-                  data = f.read()
-              layouts.append({
-                  "id": filename.removesuffix(".clinklayout"),
-                  "name": layout["name"],
-                  "version": "${{ github.sha }}",
-                  "asset": {
-                      "path": filename,
-                      "url": "https://github.com/${{ github.repository }}/releases/download/latest/" + filename,
-                      "sha256": hashlib.sha256(data).hexdigest(),
-                      "byteCount": len(data)
-                  }
-              })
-          with open("manifest.json", "w", encoding="utf-8") as f:
-              json.dump({"version": "${{ github.sha }}", "layouts": layouts}, f, indent=2)
-          PY
-      - name: Replace latest release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release delete latest --yes --cleanup-tag 2>/dev/null || true
-          gh release create latest Layouts/*.clinklayout manifest.json --title "Latest layouts" --notes "Automatically published from main."
+          shopt -s nullglob
+          assets=(Layouts/*.clinklayout manifest.json)
+          tag=$(python3 -c 'import json; print(json.load(open("manifest.json"))["version"])')
+          if draft=$(gh release view "$tag" --json isDraft --jq .isDraft); then
+            if [ "$draft" = true ]; then
+              # Resume an interrupted upload while the release is still hidden.
+              gh release upload "$tag" "${assets[@]}" --clobber
+              gh release edit "$tag" --draft=false --latest
+            else
+              gh release edit "$tag" --latest
+            fi
+          else
+            gh release create "$tag" "${assets[@]}" \
+              --target "$GITHUB_SHA" --title "Latest layouts" --draft
+            gh release edit "$tag" --draft=false --latest
+          fi
