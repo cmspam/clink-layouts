@@ -81,3 +81,7 @@ Adding a repository is a trust decision. Only add repositories whose release con
 ## Publishing is automatic
 
 Keep `Layouts/`, `tools/`, and `.github/workflows/` in your fork. Add or update a layout and push to `main`. GitHub Actions builds the manifest and refreshes the `latest` release.
+
+## Platform availability
+
+`platforms.json` sets the default platform for packs in this repository and optional overrides keyed by pack ID (language code or locale for language packs). Use `ios`, `android`, or `both`. The manifest builder writes `platform` on every entry; older entries without it mean `both`. Platform targeting affects repository discovery and downloads, not the portable format of a person’s own exported content.
