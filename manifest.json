@@ -1,0 +1,41 @@
+{
+  "version": "layouts-690d12d8b0e7d8e3b70cfb70e1f21c0566051e1302890a369533669caeb68c9d",
+  "layouts": [
+    {
+      "id": "clink-flow",
+      "name": "Clink Flow",
+      "version": "layouts-690d12d8b0e7d8e3b70cfb70e1f21c0566051e1302890a369533669caeb68c9d",
+      "asset": {
+        "path": "clink-flow.clinklayout",
+        "url": "https://github.com/anti-ltd/clink-layouts/releases/download/layouts-690d12d8b0e7d8e3b70cfb70e1f21c0566051e1302890a369533669caeb68c9d/clink-flow.clinklayout",
+        "sha256": "8304c8456a4f92a2a0892a8bae66f1260119ef35c8a99e84b1f02ab43b00c6a6",
+        "byteCount": 220
+      },
+      "platform": "both"
+    },
+    {
+      "id": "custom-mongolian-block",
+      "name": "Mongolian Cyrillic (number row together)",
+      "version": "layouts-690d12d8b0e7d8e3b70cfb70e1f21c0566051e1302890a369533669caeb68c9d",
+      "asset": {
+        "path": "custom-mongolian-block.clinklayout",
+        "url": "https://github.com/anti-ltd/clink-layouts/releases/download/layouts-690d12d8b0e7d8e3b70cfb70e1f21c0566051e1302890a369533669caeb68c9d/custom-mongolian-block.clinklayout",
+        "sha256": "345778918d744bdf89d086d39237170e1bb45cd95d72fbf6f508134c163b42ac",
+        "byteCount": 563
+      },
+      "platform": "both"
+    },
+    {
+      "id": "custom-mongolian",
+      "name": "Mongolian Cyrillic",
+      "version": "layouts-690d12d8b0e7d8e3b70cfb70e1f21c0566051e1302890a369533669caeb68c9d",
+      "asset": {
+        "path": "custom-mongolian.clinklayout",
+        "url": "https://github.com/anti-ltd/clink-layouts/releases/download/layouts-690d12d8b0e7d8e3b70cfb70e1f21c0566051e1302890a369533669caeb68c9d/custom-mongolian.clinklayout",
+        "sha256": "e1e78c6316f8fbf379125ffe083b6f18e73652337f94b6df6c380bd9b78a9335",
+        "byteCount": 535
+      },
+      "platform": "both"
+    }
+  ]
+}
